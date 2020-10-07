@@ -8,4 +8,3 @@ INSERT INTO trains (id, code, villeDepart, villeDestination) VALUES (null, "8889
 
 
 
-
