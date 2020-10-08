@@ -8,49 +8,43 @@
 </head>
 
 <body>
+
     <?php
     include "./config/db.php";
     try {
         //créer une connexion à la BD
-        $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME .
-            ';charset=' . DBCHARSET, DBUSER, DBPASS);
-    } catch (Exception $exc) {
+        $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
+    } catch (Exception $e) {
         echo "Il a eu une erreur";
+        echo $e->getMessage();
+        //die();
     }
-    var_dump($db);
-    var_dump($_POST);
+    // var_dump($db);
+    // var_dump($_POST);
 
     //prise des valeurs du formulaire
     $titre = $_POST['titre'];
     $prix = $_POST['prix'];
     $description = $_POST['description'];
-    $date_publicationLivre = $_POST['date_publicationLivre'];
-    $date_retourLivre = $_POST['date_retourLivre'];
+    $date_publication = $_POST['date_publication'];
     $isbn = $_POST['isbn'];
-    $nomAuteur = $_POST['nomAuteur'];
-    $nationaliteAuteur = $_POST['nationaliteAuteur'];
-
-    //création de la requete et spécification des paramètres d'auteur
-    $sql = "INSERT INTO auteur (id, nom, nationalite) VALUES (null, :nomAuteur, :nationaliteAuteur)";
-
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(":nomAuteur", $nomAuteur);
-    $stmt->bindParam(":nationaliteAuteur", $nationaliteAuteur);
-    $stmt->execute();
-    var_dump($stmt->errorInfo());
+    $auteur_id = $_POST['auteur_id'];
 
     //création de la requete et spécification des paramètres de livre
-    $sql = "INSERT INTO livre (id, titre, prix, description, date_publication, date_retour, isbn, auteur_id) VALUES (null, :titre, :prix, :description, :date_publicationLivre, :date_retourLivre, :isbn, LAST_INSERT_ID())";
+    $sql = "INSERT INTO livre (id, titre, prix, description, date_publication, isbn, auteur_id) VALUES (null, :titre, :prix, :description, :date_publication, :isbn, :auteur_id)";
 
     $stmt = $db->prepare($sql);
     $stmt->bindParam(":titre", $titre);
     $stmt->bindParam(":prix", $prix);
     $stmt->bindParam(":description", $description);
-    $stmt->bindParam(":date_publicationLivre", $date_publicationLivre);
-    $stmt->bindParam(":date_retourLivre", $date_retourLivre);
+    $stmt->bindParam(":date_publication", $date_publication);
     $stmt->bindParam(":isbn", $isbn);
+    $stmt->bindParam(":auteur_id", $auteur_id);
     $stmt->execute();
-    var_dump($stmt->errorInfo());
+    // var_dump($stmt->errorInfo());
+    echo '<a href="./accueil.php">Accueil</a><br><br>';
+    echo '<h3>Super, le livre a été ajouté à la base de données</h3>';
+    echo '<a href="./afficherTousLivres.php">Voir tout le livre ici </a>';
 
 
     ?>

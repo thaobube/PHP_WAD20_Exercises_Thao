@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AfficherTousLivres</title>
 </head>
 <style>
     table,
@@ -13,39 +13,48 @@
         border: 1px solid black;
     }
 </style>
+<!-- -	Créez une page où on affichera les informations de tous les livres -->
 
 <body>
+
     <?php
     include "./config/db.php";
 
     try {
         //créer une connexion à la BD
         $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
-    } catch (Exception $exc) {
+    } catch (Exception $e) {
         echo "Il a eu une erreur";
+        echo $e->getMessage();
+        //die();
     }
-    //var_dump($db);
+    // var_dump($db);
 
     //création de la requete et spécification des paramètres de livre
-    $sql = "SELECT * FROM livre";
-
+    $sql = "SELECT id, titre, prix, description, date_publication, isbn  FROM livre";
     $stmt = $db->prepare($sql); // envoyer la requête au serveur
     $stmt->execute(); // lancer la requête
 
     $arrayResultat = $stmt->fetchAll(PDO::FETCH_ASSOC); // créer un array qui contient des arrays assoc
-    //var_dump($arrayResultat);
+    // var_dump($arrayResultat);
 
+    echo '<a href="./accueil.php">Accueil</a><br><br>';
     //Afficher tous les livres
-    foreach ($arrayResultat as $livre) {
-        foreach ($livre as $key => $value) {
-            echo  strtoupper($key) . ' : ' . $value . '<br>';
-        }
-        echo '<br>' . '<br>';
+    echo '<table>';
+    echo '<tr>';
+    foreach ($arrayResultat[0] as $key => $value) {
+
+        echo '<th>' . strtoupper($key) . '</th> ';
     }
-
-
-
-
+    echo  ' </tr>';
+    foreach ($arrayResultat as $livre) {
+        echo '<tr>';
+        foreach ($livre as $value) {
+            echo '<td>' . $value . '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '</table>';
 
     ?>
 </body>
