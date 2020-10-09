@@ -9,7 +9,7 @@ SELECT * FROM trains WHERE villeDepart='Bruxelles' AND villeDestination = 'Anver
 
 -- SELECT avec une fonction
 --https://www.w3schools.com/sql/sql_ref_mysql.asp
-SELECT id, code, UPPER(villeDepart), UPPER5villeDestination) FROM trains 
+SELECT id, code, UPPER(villeDepart), UPPER(villeDestination) FROM trains 
 -- ex en PHP : $sql = "SELECT * FROM trains WHERE UPPER(villeDepart)=:villeDepart";
 
 -- SELECT avec un filtre et une fonction

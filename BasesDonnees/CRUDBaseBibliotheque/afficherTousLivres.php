@@ -31,12 +31,12 @@
     // var_dump($db);
 
     //création de la requete et spécification des paramètres de livre
-    $sql = "SELECT id, titre, prix, description, date_publication, isbn  FROM livre";
+    $sql = "SELECT id, titre, prix, description, date_publication, isbn, auteur_id  FROM livre";
     $stmt = $db->prepare($sql); // envoyer la requête au serveur
     $stmt->execute(); // lancer la requête
 
     $arrayResultat = $stmt->fetchAll(PDO::FETCH_ASSOC); // créer un array qui contient des arrays assoc
-    // var_dump($arrayResultat);
+    //var_dump($arrayResultat);
 
     echo '<a href="./accueil.php">Accueil</a><br><br>';
     //Afficher tous les livres
@@ -46,12 +46,16 @@
 
         echo '<th>' . strtoupper($key) . '</th> ';
     }
+    echo '<th>' . 'UPDATE' . '</th> ';
     echo  ' </tr>';
     foreach ($arrayResultat as $livre) {
         echo '<tr>';
         foreach ($livre as $value) {
             echo '<td>' . $value . '</td>';
         }
+        echo '<td><form action="./updateLivresFormulaire.php" method="POST">
+        <input type="hidden" value="' . $livre["id"] . '" name = "id">
+        <input type="submit" value="Update"></form></td>';
         echo '</tr>';
     }
     echo '</table>';

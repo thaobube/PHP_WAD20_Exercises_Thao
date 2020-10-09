@@ -15,19 +15,19 @@
         $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
     } catch (Exception $e) {
         echo "Il a eu une erreur";
-        echo $e->getMessage();
-        //die();
+        echo $e->getMessage(); //seulement en dev!
+        die();
     }
 
     //création de la requete
-    $sql = "SELECT id, nom FROM auteur";
+    $sql = "SELECT id, nom, prenom FROM auteur ORDER BY prenom";
 
     $stmt = $db->prepare($sql);
     $stmt->execute();
     //var_dump($stmt->errorInfo());
 
-    $arrayResultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // var_dump($arrayResultat);
+    $arrayAuteurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //var_dump($arrayAuteurs);
     echo '<a href="./accueil.php">Accueil</a><br><br>';
 
     ?>
@@ -35,20 +35,22 @@
         Titre de livre <input type="text" name="titre"> <br>
         Prix <input type="text" name="prix"><br>
         Description <input type="text" name="description"><br>
-        Date de publication <input type="text" name="date_publication"><br>
+        Date de publication <input type="date" name="date_publication"><br>
         ISBN <input type="text" name="isbn"><br>
         ID de l'auteur
         <select name="auteur_id">
             <?php
-            foreach ($arrayResultat as $array) {
-                $result = $array['id'] . ". " . $array['nom'];
-                echo '<option>' . $result . '</option>';
+            // foreach ($arrayAuteurs as $unAuteur) {
+            //     $result = $unAuteur['id'] . ". " . $unAuteur['nom'];
+            //     echo '<option>' . $result . '</option>';
+            // }
+            foreach ($arrayAuteurs as $unAuteur) {
+                $result = $unAuteur['id'] . ". " . $unAuteur['nom'];
+                echo '<option value ="' . $unAuteur['id'] . '">' . $unAuteur['prenom'] . ' ' . $unAuteur['nom'] . '</option>';
             }
             ?>
         </select>
-        <!-- Nom d'auteur <input type="text" name="nomAuteur"><br>
-        Nationalite d'auteur <input type="text" name="nationaliteAuteur"><br> -->
-        <br>
+
         <br>
         <br>
         <input type="submit" value="Rajouter de livre">
