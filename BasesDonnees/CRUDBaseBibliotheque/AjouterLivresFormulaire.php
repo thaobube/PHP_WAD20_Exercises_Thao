@@ -9,17 +9,19 @@
 
 <body>
     <?php
+    //--------------||CREATE A CONNECTION TO THE DB||---------
     include "./config/db.php";
     try {
-        //créer une connexion à la BD
         $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
     } catch (Exception $e) {
         echo "Il a eu une erreur";
         echo $e->getMessage(); //seulement en dev!
         die();
     }
+    // var_dump($db);
 
-    //création de la requete
+    //---------------||CREATE THE REQUEST||-----------------
+    //*create the request to select all the authors to show in the dropdown list
     $sql = "SELECT id, nom, prenom FROM auteur ORDER BY prenom";
 
     $stmt = $db->prepare($sql);
@@ -28,29 +30,29 @@
 
     $arrayAuteurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     //var_dump($arrayAuteurs);
+
+
+    //---------------||ADDITIONAL INFO||-----------------
+    //*Show the hyperlink of homepage
     echo '<a href="./accueil.php">Accueil</a><br><br>';
 
     ?>
+    <!-- ------------||ADD FORM||------------------------ -->
+
     <form action="./AjouterLivresTraitement.php" method="POST">
         Titre de livre <input type="text" name="titre"> <br>
         Prix <input type="text" name="prix"><br>
         Description <input type="text" name="description"><br>
         Date de publication <input type="date" name="date_publication"><br>
         ISBN <input type="text" name="isbn"><br>
-        ID de l'auteur
+        Auteur
         <select name="auteur_id">
             <?php
-            // foreach ($arrayAuteurs as $unAuteur) {
-            //     $result = $unAuteur['id'] . ". " . $unAuteur['nom'];
-            //     echo '<option>' . $result . '</option>';
-            // }
             foreach ($arrayAuteurs as $unAuteur) {
-                $result = $unAuteur['id'] . ". " . $unAuteur['nom'];
                 echo '<option value ="' . $unAuteur['id'] . '">' . $unAuteur['prenom'] . ' ' . $unAuteur['nom'] . '</option>';
             }
             ?>
         </select>
-
         <br>
         <br>
         <input type="submit" value="Rajouter de livre">

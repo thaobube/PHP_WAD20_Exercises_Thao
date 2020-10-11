@@ -10,9 +10,9 @@
 <body>
 
     <?php
+    //--------------||CREATE A CONNECTION TO THE DB||---------
     include "./config/db.php";
     try {
-        //créer une connexion à la BD
         $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
     } catch (Exception $e) {
         echo "Il a eu une erreur";
@@ -20,9 +20,11 @@
         //die();
     }
     // var_dump($db);
+
+    //------------||GETTING THE FORM VALUES||-------------
     // var_dump($_POST);
 
-    //prise des valeurs du formulaire 'UPDATE'
+    //getting all of the value from the Update FROM
     $id = $_POST['id'];
     $titre = $_POST['titre'];
     $prix = $_POST['prix'];
@@ -32,6 +34,8 @@
     $auteur_id = $_POST['auteur_id'];
 
 
+    //---------------||CREATE THE REQUEST||-----------------
+    //*create the request to update the book info to the database
 
     $sql = "UPDATE livre SET titre = :titre, prix = :prix, description = :description, date_publication =:date_publication, isbn =:isbn, auteur_id =:auteur_id WHERE id =:id";
 
@@ -46,7 +50,14 @@
     $stmt->bindParam(":auteur_id", $auteur_id);
     $stmt->execute();
     // var_dump($stmt->errorInfo());
+
+    //---------------||ADDITIONAL INFO||-----------------
+    //*Show the hyperlink of homepage
     echo '<a href="./accueil.php">Accueil</a><br><br>';
+
+
+    //---------------||SHOW THE RESULT||-----------------
+
     echo '<h3>Le livre a été mis à jour à la base de données</h3>';
     echo '<a href="./afficherTousLivres.php">Voir tout le livre ici </a>';
 

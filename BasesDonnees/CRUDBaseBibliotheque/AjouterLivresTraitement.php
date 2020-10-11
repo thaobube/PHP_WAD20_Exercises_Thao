@@ -10,9 +10,9 @@
 <body>
 
     <?php
+    //--------------||CREATE A CONNECTION TO THE DB||---------
     include "./config/db.php";
     try {
-        //créer une connexion à la BD
         $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
     } catch (Exception $e) {
         echo "Il a eu une erreur";
@@ -20,9 +20,11 @@
         //die();
     }
     // var_dump($db);
-    // var_dump($_POST);
 
-    //prise des valeurs du formulaire
+    //------------||GETTING THE FORM VALUES||-------------
+
+    // var_dump($_POST);
+    //*Getting all value from all Input in the Form
     $titre = $_POST['titre'];
     $prix = $_POST['prix'];
     $description = $_POST['description'];
@@ -30,7 +32,10 @@
     $isbn = $_POST['isbn'];
     $auteur_id = $_POST['auteur_id'];
 
-    //création de la requete et spécification des paramètres de livre
+
+    //---------------||CREATE THE REQUEST||-----------------
+    //*create the request to insert all the info into the database
+
     $sql = "INSERT INTO livre (id, titre, prix, description, date_publication, isbn, auteur_id) VALUES (null, :titre, :prix, :description, :date_publication, :isbn, :auteur_id)";
 
     $stmt = $db->prepare($sql);
@@ -42,7 +47,13 @@
     $stmt->bindParam(":auteur_id", $auteur_id);
     $stmt->execute();
     // var_dump($stmt->errorInfo());
+
+    //---------------||ADDITIONAL INFO||-----------------
+    //*Show the hyperlink of homepage
     echo '<a href="./accueil.php">Accueil</a><br><br>';
+
+    //---------------||SHOW THE RESULT||-----------------
+
     echo '<h3>Super, le livre a été ajouté à la base de données</h3>';
     echo '<a href="./afficherTousLivres.php">Voir tout le livre ici </a>';
 

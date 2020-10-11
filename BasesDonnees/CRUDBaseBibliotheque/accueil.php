@@ -11,7 +11,6 @@
     <a href="./afficherTousLivres.php">Afficher Tous les Livres</a><br><br>
     <a href="./rechercherLivresFormulaire.php">Rechercher des Livres</a><br><br>
     <a href="./AjouterLivresFormulaire.php">Ajouter des Livres</a><br><br>
-    <a href="./updateLivresFormulaire.php">Update des Livres</a><br><br>
 </body>
 
 </html>

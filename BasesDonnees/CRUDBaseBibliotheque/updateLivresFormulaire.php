@@ -10,17 +10,38 @@
 <body>
 
     <?php
+    //--------------||CREATE A CONNECTION TO THE DB||---------
     include "./config/db.php";
     try {
-        //créer une connexion à la BD
         $db = new PDO(DBDRIVER . ': host=' . DBHOST . ';port=' . DBPORT . ';dbname=' . DBNAME . ';charset=' . DBCHARSET, DBUSER, DBPASS);
     } catch (Exception $e) {
         echo "Il a eu une erreur";
         echo $e->getMessage();
-        //die();
+        die();
     }
+    // var_dump($db);
 
-    //création de la requete pour la liste deroulante de ID de l'auteur
+    //------------||GETTING THE FORM VALUES||-------------
+
+    // var_dump($_POST);
+    //*Getting the id value of the selected book when the user click on "Update" button
+    $id_livre = $_POST['id'];
+
+
+    //---------------||CREATE THE REQUEST||-----------------
+    //*create the request to select the book with the id value when the user click on "Update" button 
+    $sql = "SELECT * FROM livre WHERE id = '$id_livre'";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    //var_dump($stmt->errorInfo());
+
+    $arrayLivres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($arrayLivres);
+
+
+    //---------------||CREATE THE REQUEST||-----------------
+    //*create the request to select all the authors to show in the dropdown list 
     $sql = "SELECT id, prenom, nom FROM auteur";
 
     $stmt = $db->prepare($sql);
@@ -30,25 +51,20 @@
     $arrayAuteurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     // var_dump($arrayAuteurs);
 
-    // var_dump($_POST);
-    $id_livre = $_POST['id'];
-    //création de la requete pour tous les donnee dans la table 'livre'
-    $sql = "SELECT * FROM livre WHERE id = '$id_livre'";
-
-    $stmt = $db->prepare($sql);
-    $stmt->execute();
-    //var_dump($stmt->errorInfo());
-
-    $arrayLivres = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    //var_dump($arrayLivres);
-
+    //---------------||ADDITIONAL INFO||-----------------
+    //*Show the hyperlink of homepage
     echo '<a href="./accueil.php">Accueil</a><br><br>';
+
+    //*Create the value of the selected author (firstname + name) corresponded with the selected book for the dropdown list
     foreach ($arrayAuteurs as $unAuteur) {
         if ($unAuteur['id'] == $arrayLivres[0]["auteur_id"]) {
-            $auteurPrenomNom = $unAuteur['prenom'] . ' ' . $unAuteur['nom'];
+            $auteurNomCompletChoisi = $unAuteur['prenom'] . ' ' . $unAuteur['nom'];
         }
     }
-    // echo $auteurPrenomNom;
+    // echo $auteurNomCompletChoisi;
+
+    //---------------||UPDATE FORM||-----------------
+
     echo '<form action="./updateLivresTraitement.php" method="POST">';
     echo
         '<input type="hidden" value="' . $arrayLivres[0]["id"] . '" name="id">
@@ -57,17 +73,14 @@
         Description <input type="text" name="description" value = "' . $arrayLivres[0]["description"] . '"><br>
         Date de publication <input type="text" name="date_publication" value = "' . $arrayLivres[0]["date_publication"] . '"><br>
         ISBN <input type="text" name="isbn" value = "' . $arrayLivres[0]["isbn"] . '"><br>
-        ID de l\'auteur
-        <select name="auteur_id"><option>'  . $arrayLivres[0]["auteur_id"] . '. ' . $auteurPrenomNom . '</option>';
+        Auteur <select name="auteur_id"><option>'  . $auteurNomCompletChoisi . '</option>';
 
     foreach ($arrayAuteurs as $unAuteur) {
-        $result = $unAuteur['id'] . ". " . $unAuteur['prenom'] . ' ' . $unAuteur['nom'];
-        echo '<option>' . $result . '</option>';
+        echo '<option value ="' . $unAuteur['id'] . '">' . $unAuteur['prenom'] . ' ' . $unAuteur['nom'] . '</option>';
     }
     echo '</select><br><br>        
         <input type="submit" value="Update Info"></form>';
     ?>
-
 </body>
 
 </html>
