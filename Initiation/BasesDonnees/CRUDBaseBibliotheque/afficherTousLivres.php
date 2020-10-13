@@ -125,6 +125,10 @@
         $arrayResultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
         //var_dump($arrayResultat);
 
+        //---------------||ADDITIONAL INFO||-----------------
+        //*Show the hyperlink of homepage
+        echo '<a href="./accueil.php">Accueil</a><br><br>';
+
         //---------------||SHOW ALL BOOKS IN TABLE||--------------
         //*Afficher tous les livres en tables
         echo '<table>';
