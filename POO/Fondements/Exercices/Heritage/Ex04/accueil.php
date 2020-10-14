@@ -6,11 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
     </head>
-    <!-- 4. Rajoutez l'état civil à la classe précédant ainsi que les méthodes pour l'accéder -->
+
 
     <body>
         <?php
-        include "./CompteBancaire.class.php";
+        require_once "./CompteBancaire.class.php";
 
         $c1 = new CompteBancaire();
         $c1->numeroDeCompte = "BE001";

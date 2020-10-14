@@ -1,5 +1,4 @@
 <?php
-//1. Créez une classe CompteBancaire qui contient les informations et les opérations basiques d'un compte bancaire. Il faut pouvoir obtenir le solde du compte, enlever et rajouter un montant d'argent. On peut aussi bloquer et débloquer le compte
 
 class CompteBancaire
 {
