@@ -10,37 +10,15 @@
 
     <body>
         <?php
-        require_once "./CompteBancaire.class.php";
+        require_once "./Departement.class.php";
+        require_once "./Manager.class.php";
 
-        $c1 = new CompteBancaire();
-        $c1->numeroDeCompte = "BE001";
-
-        $c1->setLigneDeCredit(100);
-
-        echo $c1->getSolde();
-        echo "<br>";
-        $c1->rajouter(1000);
-        echo $c1->getSolde();
-        echo "<br>";
-        $c1->rajouter(250);
-        echo $c1->getSolde();
-        echo "<br>";
-
-        $c1->enlever(500);
-        echo $c1->getSolde();
-        echo "<br>";
-        $c1->enlever(900);
-        echo "<br>";
-        echo $c1->getSolde();
-        echo "<br>";
-
-        $c1->isBloque = true;
-        $c1->rajouter(250);
-        echo "<br>";
-        echo $c1->getSolde();
-        echo "<br>";
-
-
+        $departement = new Departement("Analyse");
+        var_dump($departement);
+        $manager =  new Manager("Shin Yu", 5000);
+        var_dump($manager);
+        $manager->setDepartementGere($departement);
+        var_dump($manager);
         ?>
     </body>
 
